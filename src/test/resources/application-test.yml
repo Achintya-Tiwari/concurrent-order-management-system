@@ -1,0 +1,26 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# application-test.yml  –  Test slice configuration
+#
+# Used by @DataJpaTest and @SpringBootTest test classes.
+# Replaces MySQL with H2 in-memory so tests run without a real database.
+# ─────────────────────────────────────────────────────────────────────────────
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:oms_test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      # H2 MODE=MySQL makes most MySQL syntax work, but let Hibernate validate
+      # against the schema that Flyway creates from our migration scripts.
+      ddl-auto: create-drop
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  # Flyway should still run our migration scripts against H2
+  flyway:
+    enabled: false  # Disabled for @DataJpaTest — Hibernate ddl-auto handles schema creation.
+                    # Enable and set locations if you want to test migrations explicitly.

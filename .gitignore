@@ -1,0 +1,22 @@
+# Maven build output
+target/
+*.class
+
+# IDE files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# Spring Boot
+*.log
+logs/
+
+# Sensitive config — never commit real credentials
+# application-prod.yml
+.env
+
+# OS
+.DS_Store
+Thumbs.db

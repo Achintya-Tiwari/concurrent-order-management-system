@@ -1,0 +1,44 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# application-dev.yml  –  Local development overrides
+#
+# Activated by: SPRING_PROFILES_ACTIVE=dev  or  --spring.profiles.active=dev
+# Safe to commit — contains no real secrets.
+# ─────────────────────────────────────────────────────────────────────────────
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/order-management_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: false
+
+# ── Verbose logging in dev ───────────────────────────────────────────────────
+logging:
+  level:
+    com.psl.oms: DEBUG
+    com.psl.oms.async: DEBUG          # see every async/scheduler/concurrent log line
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+    org.springframework.web: DEBUG
+    org.flywaydb: DEBUG
+    org.springframework.scheduling: DEBUG   # see scheduler trigger events
+
+# ── Phase 3 dev overrides ───────────────────────────────────────────────────
+oms:
+  scheduler:
+    delayed-orders:
+      # Run every minute in dev so you can test the scheduler without waiting for midnight.
+      # Change back to "0 0 0 * * *" for production.
+      cron: "0 * * * * *"
+
+springdoc:
+  swagger-ui:
+    try-it-out-enabled: true
